@@ -1,9 +1,9 @@
 {
-  "name": "Certificate Automation - Hybrid (Event + Schedule + Catch-up + Backfill)",
+  "name": "Certificate Automation - Hybrid (Event, Schedule, Catch-up, Backfill)",
   "nodes": [
     {
       "parameters": {
-        "content": "مشكلة: مركز تدريب يصدر شهادات يدوياً (تأخير، أخطاء أسماء، تكرار، نسيان).\n\nورقة Google Sheets باسم Certificates:\ncert_id | name | email | course | score | status | created_at | issued_at | error | template_version | regenerated_at\n\nقالب Google Doc يحتوي: {{name}} {{course}} {{score}} {{date}} {{cert_id}}\n\nبعد الاستيراد: اختر Credentials (Sheets, Docs, Drive, Gmail) وبدّل كل قيمة تبدأ بـ REPLACE_.\nاربط Error Workflow من الملف 00_error_workflow.json.",
+        "content": "## Setup\n\nGoogle Sheet named **Certificates** with columns:\ncert_id | name | email | course | score | status | created_at | issued_at | error | template_version | regenerated_at\n\nGoogle Doc template containing: {{name}} {{course}} {{score}} {{date}} {{cert_id}}\n\nAfter import: select credentials (Sheets, Docs, Drive, Gmail) and replace every value starting with REPLACE_.\nOptionally attach an error workflow in the workflow settings.",
         "height": 260,
         "width": 420
       },
@@ -18,7 +18,7 @@
     },
     {
       "parameters": {
-        "content": "## 🟢 Lane 1: Event-Driven\nنموذج إتمام الدورة ← شهادة فورية",
+        "content": "## Lane 1: Event-driven\nCourse completion form to instant certificate",
         "height": 100,
         "width": 700,
         "color": 4
@@ -34,7 +34,7 @@
     },
     {
       "parameters": {
-        "content": "## 🌙 Lane 2: Schedule (Catch-up)\nكل ليلة: يلتقط الشهادات الفاشلة/العالقة",
+        "content": "## Lane 2: Scheduled catch-up\nNightly retry of pending or failed certificates",
         "height": 100,
         "width": 560,
         "color": 6
@@ -50,7 +50,7 @@
     },
     {
       "parameters": {
-        "content": "## 🔁 Lane 3: Backfill (يدوي)\nإعادة توليد الشهادات القديمة بالقالب الجديد",
+        "content": "## Lane 3: Manual backfill\nRe-generate old certificates with the new template",
         "height": 100,
         "width": 560,
         "color": 3
@@ -66,7 +66,7 @@
     },
     {
       "parameters": {
-        "content": "## 📊 Lane 4: Schedule (Weekly Report)\nتقرير Excel أسبوعي للمدير",
+        "content": "## Lane 4: Weekly report\nExcel summary sent to the manager",
         "height": 100,
         "width": 560,
         "color": 5
@@ -82,7 +82,7 @@
     },
     {
       "parameters": {
-        "content": "## 📄 المسار المشترك: توليد الملف من القالب\nكل المسارات تمر من هنا",
+        "content": "## Shared pipeline: document generation\nAll lanes pass through here",
         "height": 100,
         "width": 700,
         "color": 7
@@ -98,9 +98,9 @@
     },
     {
       "parameters": {
-        "path": "85109eec-dba7-4cc8-83a7-352287ea26a6",
-        "formTitle": "إتمام دورة - إصدار شهادة",
-        "formDescription": "يملؤه المدرب عند نجاح المتدرب",
+        "path": "certificate-form",
+        "formTitle": "Course Completion - Certificate Issuance",
+        "formDescription": "Submitted by the instructor when a trainee passes the course.",
         "formFields": {
           "values": [
             {
@@ -148,8 +148,7 @@
         384
       ],
       "id": "b1deaad0-a73c-4856-ad58-14ecb7e9f855",
-      "name": "Course Completion Form",
-      "webhookId": "85109eec-dba7-4cc8-83a7-352287ea26a6"
+      "name": "Course Completion Form"
     },
     {
       "parameters": {
@@ -202,10 +201,8 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk",
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit?usp=drivesdk"
+          "value": "REPLACE_WITH_GOOGLE_SHEET_ID",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
@@ -235,7 +232,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "name",
@@ -244,7 +242,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "email",
@@ -253,7 +252,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "course",
@@ -262,7 +262,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "score",
@@ -271,7 +272,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "status",
@@ -280,7 +282,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "created_at",
@@ -289,7 +292,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "issued_at",
@@ -299,7 +303,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "error",
@@ -308,7 +312,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "template_version",
@@ -318,7 +323,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "regenerated_at",
@@ -328,7 +333,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -343,22 +348,14 @@
         272
       ],
       "id": "c696447d-ffc1-42af-8aec-0bbbc79c7a22",
-      "name": "Log Rejected",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "name": "Log Rejected"
     },
     {
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk",
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit?usp=drivesdk"
+          "value": "REPLACE_WITH_GOOGLE_SHEET_ID",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
@@ -369,7 +366,7 @@
           "values": [
             {
               "lookupColumn": "cert_id",
-              "lookupValue": "={{ $json.name }}"
+              "lookupValue": "={{ $json.cert_id }}"
             }
           ]
         },
@@ -383,13 +380,7 @@
       ],
       "id": "29fd888e-cfb7-47da-9e58-6b11c756c3b7",
       "name": "Check Duplicate",
-      "alwaysOutputData": true,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -397,7 +388,7 @@
           "options": {
             "caseSensitive": true,
             "leftValue": "",
-            "typeValidation": "strict",
+            "typeValidation": "loose",
             "version": 2
           },
           "conditions": [
@@ -440,32 +431,29 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk",
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit?usp=drivesdk"
+          "value": "REPLACE_WITH_GOOGLE_SHEET_ID",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": 214050441,
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit#gid=214050441"
+          "value": "Certificates",
+          "mode": "name",
+          "cachedResultName": "Certificates"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "cert_id": "={{ $json.cert_id }}",
-            "name": "={{ $json.name }}",
-            "email": "={{ $json.email }}",
-            "score": "={{ $json.score }}",
-            "course": "={{ $json.score }}",
-            "status": "={{ $json.status }}",
-            "created_at": "={{ $json.created_at }}",
-            "issued_at": "={{ $json.issued_at }}",
-            "error": "={{ $json.error }}",
-            "template_version": "={{ $json.template_version }}",
-            "regenerated_at": "={{ $json.regenerated_at }}"
+            "cert_id": "={{ $('Prepare Request').item.json.cert_id }}",
+            "name": "={{ $('Prepare Request').item.json.name }}",
+            "email": "={{ $('Prepare Request').item.json.email }}",
+            "course": "={{ $('Prepare Request').item.json.course }}",
+            "score": "={{ $('Prepare Request').item.json.score }}",
+            "status": "pending",
+            "created_at": "={{ $now.toISO() }}",
+            "issued_at": "",
+            "error": "",
+            "template_version": "",
+            "regenerated_at": ""
           },
           "matchingColumns": [
             "cert_id"
@@ -580,36 +568,6 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
-            },
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "threadId",
-              "displayName": "threadId",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "labelIds",
-              "displayName": "labelIds",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -624,13 +582,7 @@
         560
       ],
       "id": "14ac03e5-24c7-4953-954f-59f6c94624d2",
-      "name": "Log Pending",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "name": "Log Pending"
     },
     {
       "parameters": {
@@ -669,17 +621,14 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk",
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit?usp=drivesdk"
+          "value": "REPLACE_WITH_GOOGLE_SHEET_ID",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": 214050441,
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit#gid=214050441"
+          "value": "Certificates",
+          "mode": "name",
+          "cachedResultName": "Certificates"
         },
         "options": {}
       },
@@ -691,17 +640,11 @@
       ],
       "id": "0bce5bb7-8755-48b2-a986-a35ea5e243a7",
       "name": "Read Sheet - Nightly",
-      "alwaysOutputData": true,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "alwaysOutputData": true
     },
     {
       "parameters": {
-        "jsCode": "const now = Date.now();\nreturn $input.all().map(i => i.json)\n  .filter(r => r.cert_id && ['pending', 'failed'].includes(r.status) &&\n               (now - new Date(r.created_at).getTime()) / 60000 > 15)\n  .slice(0, 20)   // دفعة صغيرة لحماية حدود الـ API\n  .map(r => ({ json: { cert_id: r.cert_id, name: r.name, email: r.email, course: r.course, score: r.score, mode: 'issue' } }));"
+        "jsCode": "const now = Date.now();\nreturn $input.all().map(i => i.json)\n  .filter(r => r.cert_id && ['pending', 'failed'].includes(r.status) &&\n               (now - new Date(r.created_at).getTime()) / 60000 > 15)\n  .slice(0, 20)\n  .map(r => ({ json: { cert_id: r.cert_id, name: r.name, email: r.email, course: r.course, score: r.score, mode: 'issue' } }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -745,17 +688,11 @@
       ],
       "id": "d89c1c99-3967-40ff-a967-bf1bf7d73e48",
       "name": "Read Sheet - Backfill",
-      "alwaysOutputData": true,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "alwaysOutputData": true
     },
     {
       "parameters": {
-        "jsCode": "const TEMPLATE_VERSION = 'v2';   // غيّره عند تغيير القالب\nconst COURSE = '';               // اتركه فارغاً لكل الدورات أو اكتب اسم دورة\nreturn $input.all().map(i => i.json)\n  .filter(r => r.cert_id && r.status === 'issued' && r.template_version !== TEMPLATE_VERSION &&\n               (!COURSE || r.course === COURSE))\n  .slice(0, 20)\n  .map(r => ({ json: { cert_id: r.cert_id, name: r.name, email: r.email, course: r.course, score: r.score, mode: 'backfill' } }));"
+        "jsCode": "const TEMPLATE_VERSION = 'v2';\nconst COURSE = '';\nreturn $input.all().map(i => i.json)\n  .filter(r => r.cert_id && r.status === 'issued' && r.template_version !== TEMPLATE_VERSION &&\n               (!COURSE || r.course === COURSE))\n  .slice(0, 20)\n  .map(r => ({ json: { cert_id: r.cert_id, name: r.name, email: r.email, course: r.course, score: r.score, mode: 'backfill' } }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -836,7 +773,7 @@
         "operation": "copy",
         "fileId": {
           "__rl": true,
-          "value": "10RQUL8OXjRhGfHMsseWZQwa1cOXXcJy4Ty8A-AAxBpw",
+          "value": "REPLACE_WITH_TEMPLATE_DOC_ID",
           "mode": "id"
         },
         "name": "=Certificate_{{ $json.cert_id }}",
@@ -849,13 +786,7 @@
         800
       ],
       "id": "a53e3e7d-cb77-45a5-a320-9a385b508768",
-      "name": "Copy Template",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "gtgvbBrY5FyRdas3",
-          "name": "Google Drive account 2"
-        }
-      }
+      "name": "Copy Template"
     },
     {
       "parameters": {
@@ -898,13 +829,7 @@
         800
       ],
       "id": "f4dbc626-4553-46f3-b9ef-0cb9bbdd8a1b",
-      "name": "Fill Template",
-      "credentials": {
-        "googleDocsOAuth2Api": {
-          "id": "HEc5u2rMYZgoA5Oc",
-          "name": "Google Docs account"
-        }
-      }
+      "name": "Fill Template"
     },
     {
       "parameters": {
@@ -929,13 +854,7 @@
         800
       ],
       "id": "df5ee1e5-2f1c-4925-a4ac-ba5730835f02",
-      "name": "Export PDF",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "gtgvbBrY5FyRdas3",
-          "name": "Google Drive account 2"
-        }
-      }
+      "name": "Export PDF"
     },
     {
       "parameters": {
@@ -948,10 +867,8 @@
         },
         "folderId": {
           "__rl": true,
-          "value": "1vH62FSGhcT7K2mUJiTqwd8OodXLvqGy-",
-          "mode": "list",
-          "cachedResultName": "certificates1",
-          "cachedResultUrl": "https://drive.google.com/drive/folders/1vH62FSGhcT7K2mUJiTqwd8OodXLvqGy-"
+          "value": "REPLACE_WITH_DRIVE_FOLDER_ID",
+          "mode": "id"
         },
         "options": {}
       },
@@ -962,13 +879,7 @@
         656
       ],
       "id": "d3f5565f-c03e-4166-a72f-7beb1002939d",
-      "name": "Archive PDF in Drive",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "gtgvbBrY5FyRdas3",
-          "name": "Google Drive account 2"
-        }
-      }
+      "name": "Archive PDF in Drive"
     },
     {
       "parameters": {
@@ -1005,14 +916,16 @@
     },
     {
       "parameters": {
-        "sendTo": "=khaledmahamed220@gmail.com",
-        "subject": "=شهادة إتمام دورة {{ $('Set Cert Data').item.json.course }}",
-        "message": "=<p>مرحباً {{ $('Set Cert Data').item.json.name }}،</p><p>تهانينا على إتمام الدورة! شهادتك مرفقة.</p>",
+        "sendTo": "={{ $('Set Cert Data').item.json.email }}",
+        "subject": "=Certificate of Completion: {{ $('Set Cert Data').item.json.course }}",
+        "message": "=<p>Hello {{ $('Set Cert Data').item.json.name }},</p><p>Congratulations on completing the course. Your certificate is attached.</p>",
         "options": {
           "appendAttribution": false,
           "attachmentsUi": {
             "attachmentsBinary": [
-              {}
+              {
+                "property": "data"
+              }
             ]
           }
         }
@@ -1027,31 +940,21 @@
       "name": "Email Certificate",
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 3000,
-      "webhookId": "59a36412-0b3e-4e26-84f9-a88772df25f0",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "tHkYRO6bf9E5S3Xt",
-          "name": "Gmail account"
-        }
-      }
+      "waitBetweenTries": 3000
     },
     {
       "parameters": {
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk",
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit?usp=drivesdk"
+          "value": "REPLACE_WITH_GOOGLE_SHEET_ID",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": 214050441,
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit#gid=214050441"
+          "value": "Certificates",
+          "mode": "name",
+          "cachedResultName": "Certificates"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1061,15 +964,10 @@
             "email": "={{ $('Set Cert Data').item.json.email }}",
             "course": "={{ $('Set Cert Data').item.json.course }}",
             "score": "={{ $('Set Cert Data').item.json.score }}",
-            "status": "={{ $('Log Pending').item.json.status }}",
-            "issued_at": "={{ $('Log Pending').item.json.issued_at }}",
-            "error": "={{ $('Log Pending').item.json.error }}",
-            "template_version": "={{ $('Log Pending').item.json.template_version }}",
-            "regenerated_at": "={{ $('Log Pending').item.json.regenerated_at }}",
-            "id": "={{ $json.id }}",
-            "threadId": "={{ $json.threadId }}",
-            "labelIds": "={{ $json.labelIds }}",
-            "created_at": "15/11/2026"
+            "status": "issued",
+            "issued_at": "={{ $now.toISO() }}",
+            "error": "",
+            "template_version": "={{ $('Set Cert Data').item.json.template_version }}"
           },
           "matchingColumns": [
             "cert_id"
@@ -1143,7 +1041,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "issued_at",
@@ -1183,37 +1081,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "threadId",
-              "displayName": "threadId",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "labelIds",
-              "displayName": "labelIds",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1228,13 +1096,7 @@
         960
       ],
       "id": "f9dee9c8-d6aa-4467-8aaa-32e263666570",
-      "name": "Mark Issued",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "name": "Mark Issued"
     },
     {
       "parameters": {
@@ -1259,7 +1121,118 @@
           "matchingColumns": [
             "cert_id"
           ],
-          "schema": []
+          "schema": [
+            {
+              "id": "cert_id",
+              "displayName": "cert_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "course",
+              "displayName": "course",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "issued_at",
+              "displayName": "issued_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "error",
+              "displayName": "error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "template_version",
+              "displayName": "template_version",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "regenerated_at",
+              "displayName": "regenerated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
         },
         "options": {}
       },
@@ -1270,13 +1243,7 @@
         1184
       ],
       "id": "066536fb-40b7-44fc-af77-f068500a267e",
-      "name": "Mark Regenerated",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "name": "Mark Regenerated"
     },
     {
       "parameters": {
@@ -1302,17 +1269,14 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk",
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit?usp=drivesdk"
+          "value": "REPLACE_WITH_GOOGLE_SHEET_ID",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": 214050441,
-          "mode": "list",
-          "cachedResultName": "Certificates",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r3ByhyvQMCoJJCwO3mI959elsMiHFibFHZlBvCjMNmk/edit#gid=214050441"
+          "value": "Certificates",
+          "mode": "name",
+          "cachedResultName": "Certificates"
         },
         "options": {}
       },
@@ -1324,13 +1288,7 @@
       ],
       "id": "02bccf21-d1af-40c7-a73b-7c0d87556488",
       "name": "Read Sheet - Weekly",
-      "alwaysOutputData": true,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "MTDLsNuazckJyPSE",
-          "name": "Google Sheets account 2"
-        }
-      }
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -1363,14 +1321,16 @@
     },
     {
       "parameters": {
-        "sendTo": "khaledmahamed220@gmail.com",
-        "subject": "تقرير الشهادات الأسبوعي",
-        "message": "=<p>عدد الشهادات المُصدرة هذا الأسبوع: <b>{{ $('Weekly Rows').all().filter(i => i.json.cert_id).length }}</b></p><p>التفاصيل في الملف المرفق.</p>\n ",
+        "sendTo": "REPLACE_WITH_EMAIL",
+        "subject": "Weekly Certificates Report",
+        "message": "=<p>Certificates issued this week: <b>{{ $('Weekly Rows').all().filter(i => i.json.cert_id).length }}</b></p><p>Details are in the attached file.</p>",
         "options": {
           "appendAttribution": false,
           "attachmentsUi": {
             "attachmentsBinary": [
-              {}
+              {
+                "property": "data"
+              }
             ]
           }
         }
@@ -1382,14 +1342,7 @@
         1792
       ],
       "id": "4f4486d8-6b5c-43ec-afe3-81e71f3eee40",
-      "name": "Email Manager",
-      "webhookId": "042c695c-77a7-43db-a6f2-a03f8b24c700",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "tHkYRO6bf9E5S3Xt",
-          "name": "Gmail account"
-        }
-      }
+      "name": "Email Manager"
     }
   ],
   "pinData": {},
@@ -1680,12 +1633,9 @@
     "binaryMode": "separate",
     "availableInMCP": true
   },
-  "versionId": "843c0fe8-e26e-4316-9431-6683efbe9b92",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "0975231faabc3c337c8acf7d1681744bb2128edf1ec0a0035c737dc89ba1a5d8"
+    "templateCredsSetupCompleted": false
   },
   "nodeGroups": [],
-  "id": "YGfk0U4wTRRs0Hge",
   "tags": []
 }
